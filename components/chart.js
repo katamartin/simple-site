@@ -4,12 +4,12 @@ import { useProjects } from '../resources/projects'
 import CategoryChart from './category-chart'
 
 const categories = [
-  { name: 'dac', color: 'purple' },
   { name: 'forests', color: 'green' },
-  { name: 'mineralization', color: 'grey' },
+  { name: 'soil', color: 'orange' },
   { name: 'biomass', color: 'yellow' },
   { name: 'ocean', color: 'teal' },
-  { name: 'soil', color: 'orange' },
+  { name: 'mineralization', color: 'grey' },
+  { name: 'dac', color: 'purple' },
 ]
 
 const Chart = ({ metric }) => {
@@ -31,6 +31,7 @@ const Chart = ({ metric }) => {
       color={color}
       projects={partitionedData[name]}
       metric={metric}
+      name={name}
       key={name}
     />
   ))
