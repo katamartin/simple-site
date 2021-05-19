@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box } from 'theme-ui'
+import { Box, useThemeUI } from 'theme-ui'
 import { mean, max, range } from 'd3-array'
 import { line, curveBasis } from 'd3-shape'
 import { scaleLinear } from 'd3-scale'
@@ -20,6 +20,7 @@ const CategoryChart = ({ color, metric, name, projects }) => {
     [projects, metric]
   )
   const { domain, bandwidth, x } = useMetric(metric)
+  const { theme } = useThemeUI()
 
   const height = 42
   const offset = 12
@@ -72,7 +73,7 @@ const CategoryChart = ({ color, metric, name, projects }) => {
         <g key={`${name}-path`}>
           <path
             d={generator(density)}
-            stroke={color}
+            stroke={theme.colors[color]}
             strokeWidth={2.75}
             fill={'none'}
             vectorEffect='non-scaling-stroke'
@@ -92,7 +93,7 @@ const CategoryChart = ({ color, metric, name, projects }) => {
               key={`${name}-${id}`}
               r={5.5}
               animate={{ cx: x(value) + '%', cy: height - offset }}
-              fill={color}
+              fill={theme.colors[color]}
             />
           ))}
         </g>

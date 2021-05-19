@@ -1,4 +1,4 @@
-import { scaleLog } from 'd3-scale'
+import { scaleLog, scaleLinear } from 'd3-scale'
 
 const metrics = {
   permanence: {
@@ -6,11 +6,45 @@ const metrics = {
     ticks: [1, 10, 100, 1000],
     log: true,
     bandwidth: 0.1,
+    units: 'years',
   },
   volume: {
     domain: [10, 1000000],
     ticks: [10, 100, 1000, 10000, 100000, 1000000],
     log: true,
+    bandwidth: 0.2,
+    units: 'tCO₂',
+  },
+  cost: {
+    domain: [1, 2000],
+    ticks: [1, 20, 200, 2000],
+    log: true,
+    bandwidth: 0.1,
+    units: '$/tCO₂',
+  },
+  negativity: {
+    domain: [0, 1],
+    ticks: [0, 0.2, 0.4, 0.6, 0.8, 1],
+    log: false,
+    // TODO: understand bandwidth, pick better value
+    bandwidth: 0.000001,
+  },
+  mechanism: {
+    domain: [0, 5],
+    ticks: [0, 1, 2, 3, 4, 5],
+    log: false,
+    bandwidth: 0.2,
+  },
+  additionality: {
+    domain: [0, 5],
+    ticks: [0, 1, 2, 3, 4, 5],
+    log: false,
+    bandwidth: 0.2,
+  },
+  specificity: {
+    domain: [0, 5],
+    ticks: [0, 1, 2, 3, 4, 5],
+    log: false,
     bandwidth: 0.2,
   },
 }
@@ -20,7 +54,7 @@ export const useMetric = (metric) => {
     throw `unexpected metric: ${metric}`
   }
 
-  const { domain, bandwidth, log, ticks } = metrics[metric]
+  const { domain, bandwidth, log, ticks, units } = metrics[metric]
   const margin = 1.65
   const width = 100
 
@@ -51,5 +85,5 @@ export const useMetric = (metric) => {
       .clamp(true)
   }
 
-  return { domain, bandwidth, log, ticks, x, xTicks }
+  return { domain, bandwidth, log, ticks, units, x, xTicks }
 }
