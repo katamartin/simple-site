@@ -1,27 +1,12 @@
 import React from 'react'
 import { Box } from 'theme-ui'
-import { mean, max, range, subset } from 'd3-array'
+import { mean, max, range } from 'd3-array'
 import { line, curveBasis } from 'd3-shape'
-import { scaleLinear, scaleLog } from 'd3-scale'
+import { scaleLinear } from 'd3-scale'
 import { motion } from 'framer-motion'
-
-const metrics = {
-  permanence: {
-    domain: [1, 1000],
-    ticks: [1, 10, 100, 1000],
-    log: true,
-    bandwidth: 0.1,
-  },
-  volume: {
-    domain: [10, 1000000],
-    ticks: [10, 100, 1000, 10000, 100000, 1000000],
-    log: true,
-    bandwidth: 0.2,
-  },
-}
+import { useMetric } from '../resources/metrics'
 
 const CategoryChart = ({ color, metric, name, projects }) => {
-  const { domain, bandwidth, log } = metrics[metric]
   const metricData = React.useMemo(
     () =>
       projects
@@ -34,21 +19,8 @@ const CategoryChart = ({ color, metric, name, projects }) => {
         .filter(({ metric }) => typeof metric.value === 'number'),
     [projects, metric]
   )
+  const { domain, bandwidth, x } = useMetric(metric)
 
-  const totalProjects = metricData.length
-  const averageRating =
-    metricData.reduce((sum, project) => sum + project.metric.rating, 0) /
-    totalProjects
-  const averageValue =
-    metricData.reduce((sum, project) => sum + project.metric.value, 0) /
-    totalProjects
-
-  // return (
-  //   <Box sx={{ color }}>
-  //     Average rating: {averageRating} Average value: {averageValue}{' '}
-  //     {metricData[0].metric.units}
-  //   </Box>
-  // )
   const height = 42
   const offset = 12
 
@@ -56,35 +28,6 @@ const CategoryChart = ({ color, metric, name, projects }) => {
     id: p.id,
     value: Math.min(Math.max(p.metric.value, domain[0]), domain[1]),
   }))
-
-  const margin = 1.65
-  const width = 100
-  let x, xTicks
-  if (log) {
-    x = scaleLog()
-      .domain(domain)
-      .range([margin, width - margin - margin])
-      .clamp(true)
-    xTicks = scaleLog()
-      .domain(domain)
-      .range([
-        (margin / width) * 100,
-        ((width - margin) / width) * 100 - margin,
-      ])
-      .clamp(true)
-  } else {
-    x = scaleLinear()
-      .domain(domain)
-      .range([margin, width - margin - 1])
-      .clamp(true)
-    xTicks = scaleLinear()
-      .domain(domain)
-      .range([
-        (margin / width) * 100,
-        ((width - margin) / width) * 100 - margin,
-      ])
-      .clamp(true)
-  }
 
   const thresholds = range(
     Math.log10(domain[0]),
