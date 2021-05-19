@@ -32,45 +32,85 @@ const Chart = ({ metric }) => {
   }, [projects])
 
   return (
-    <Box
-      sx={{
-        width: '104.9%',
-        display: 'block',
-        ml: ['-1.6%'],
-      }}
-    >
-      {categories.map(({ name, color }) => (
-        <CategoryChart
-          color={color}
-          projects={partitionedData[name]}
-          metric={metric}
-          name={name}
-          key={name}
-        />
-      ))}
-      <svg width={'100%'} height={11}>
-        {ticks.map((d, i) => {
-          return (
-            <text
-              key={'tick-' + i}
-              x={xTicks(d) + '%'}
-              y={11}
-              textAnchor={'middle'}
-              fontFamily={theme.fonts.mono}
-              fill={theme.colors.secondary}
-              fontSize={theme.fontSizes[2]}
-              style={{ userSelect: 'none' }}
-            >
-              {d === 1000 && name === 'permanence'
-                ? '1k+'
-                : d === 1000000 && name === 'volume'
-                ? '1M+'
-                : format('~s')(d)}
-            </text>
-          )
-        })}
-      </svg>
-    </Box>
+    <>
+      <Box
+        as='figure'
+        sx={{
+          width: '104.9%',
+          display: 'block',
+          ml: ['-1.6%'],
+        }}
+      >
+        {categories.map(({ name, color }) => (
+          <CategoryChart
+            color={color}
+            projects={partitionedData[name]}
+            metric={metric}
+            name={name}
+            key={name}
+          />
+        ))}
+        <svg width={'100%'} height={11}>
+          {ticks.map((d, i) => {
+            return (
+              <text
+                key={'tick-' + i}
+                x={xTicks(d) + '%'}
+                y={11}
+                textAnchor={'middle'}
+                fontFamily={theme.fonts.mono}
+                fill={theme.colors.secondary}
+                fontSize={theme.fontSizes[2]}
+                style={{ userSelect: 'none' }}
+              >
+                {d === 1000 && name === 'permanence'
+                  ? '1k+'
+                  : d === 1000000 && name === 'volume'
+                  ? '1M+'
+                  : format('~s')(d)}
+              </text>
+            )
+          })}
+        </svg>
+      </Box>
+      <Box
+        as='figcaption'
+        sx={{
+          color: 'secondary',
+          mt: [3, 3, 3, 4],
+          mb: [6, 6, 6, 7],
+          fontSize: [2, 2, 2, 3],
+        }}
+      >
+        Metric distributions across six project categories:{' '}
+        <Box as='span' sx={{ color: 'green' }}>
+          forests
+        </Box>
+        {', '}
+        <Box as='span' sx={{ color: 'orange' }}>
+          soil
+        </Box>
+        {', '}
+        <Box as='span' sx={{ color: 'yellow' }}>
+          biomass
+        </Box>
+        {', '}
+        <Box as='span' sx={{ color: 'teal' }}>
+          ocean
+        </Box>
+        {', '}
+        <Box as='span' sx={{ color: 'grey' }}>
+          mineralization
+        </Box>
+        {', '}
+        <Box as='span' sx={{ color: 'purple' }}>
+          direct air capture
+        </Box>
+        . Each circle represents a project, and curves show the distribution
+        using a kernel density estimate. Values reflect project proposals and
+        may not necessarily be accurate or realistic.
+      </Box>
+    </>
   )
 }
 
