@@ -1,7 +1,6 @@
 import React from 'react'
 
-const DATA_URL =
-  'https://carbonplan.blob.core.windows.net/carbonplan-forests/offsets/database/forest-offsets-database-v1.0.json'
+const DATA_URL = 'https://carbonplan.org/research/cdr-database/projects.json'
 
 const ProjectsContext = React.createContext(null)
 
@@ -10,19 +9,23 @@ export const ProjectsContextProvider = ({ projects, children }) => {
 
   React.useEffect(async () => {
     const result = await fetch(DATA_URL)
-    // Manually parse result text instead of calling .json() to
-    // handle NaN in JSON response
 
-    const text = await result.text()
-    const projects = JSON.parse(text.replace(/\bNaN\b/g, 'null'))
-    const parsedProjects = projects
-      // .filter((project) => project.over_crediting)
-      .map((project) => ({
-        id: project.id,
-        name: project.name,
-        coordinates: project.shape_centroid[0],
-        // over_crediting: project.over_crediting.
-      }))
+    const { projects } = await result.json()
+    const parsedProjects = projects.map(
+      ({ id, applicant, metrics, tags, rating, description }) => ({
+        id,
+        applicant,
+        rating,
+        description,
+        tags,
+        metrics: metrics.map(({ name, value, units, rating }) => ({
+          name,
+          value,
+          units,
+          rating,
+        })),
+      })
+    )
 
     setData(parsedProjects)
   }, [])
