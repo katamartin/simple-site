@@ -3,6 +3,7 @@ import { Box } from 'theme-ui'
 import { mean, max, range, subset } from 'd3-array'
 import { line, curveBasis } from 'd3-shape'
 import { scaleLinear, scaleLog } from 'd3-scale'
+import { motion } from 'framer-motion'
 
 const metrics = {
   permanence: {
@@ -144,11 +145,10 @@ const CategoryChart = ({ color, metric, name, projects }) => {
       >
         <g key={`${name}-points`}>
           {points.map(({ id, value }) => (
-            <circle
-              key={id}
+            <motion.circle
+              key={`${name}-${id}`}
               r={5.5}
-              cx={x(value) + '%'}
-              cy={height - offset}
+              animate={{ cx: x(value) + '%', cy: height - offset }}
               fill={color}
             />
           ))}
