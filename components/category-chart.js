@@ -6,7 +6,14 @@ import { scaleLinear } from 'd3-scale'
 import { motion } from 'framer-motion'
 import { useMetric } from '../resources/metrics'
 
-const CategoryChart = ({ color, metric, name, projects }) => {
+const CategoryChart = ({
+  color,
+  metric,
+  name,
+  projects,
+  selected,
+  setSelected,
+}) => {
   const metricData = React.useMemo(
     () =>
       projects
@@ -21,6 +28,7 @@ const CategoryChart = ({ color, metric, name, projects }) => {
   )
   const { domain, bandwidth, x } = useMetric(metric)
   const { theme } = useThemeUI()
+  const [hovered, setHovered] = React.useState(null)
 
   const height = 42
   const offset = 12
@@ -88,14 +96,25 @@ const CategoryChart = ({ color, metric, name, projects }) => {
         preserveAspectRatio='none'
       >
         <g key={`${name}-points`}>
-          {points.map(({ id, value }) => (
-            <motion.circle
-              key={`${name}-${id}`}
-              r={5.5}
-              animate={{ cx: x(value) + '%', cy: height - offset }}
-              fill={theme.colors[color]}
-            />
-          ))}
+          {points.map(({ id, value }) => {
+            let pointColor = theme.colors[color]
+            if (id === hovered) {
+              pointColor = theme.colors.muted
+            } else if (id === selected) {
+              pointColor = theme.colors.primary
+            }
+            return (
+              <motion.circle
+                key={`${name}-${id}`}
+                r={5.5}
+                animate={{ cx: x(value) + '%', cy: height - offset }}
+                fill={pointColor}
+                onMouseEnter={() => setHovered(id)}
+                onMouseLeave={() => setHovered(null)}
+                onClick={() => setSelected(id)}
+              />
+            )
+          })}
         </g>
       </Box>
     </Box>

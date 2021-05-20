@@ -15,7 +15,7 @@ const categories = [
   { name: 'dac', color: 'purple' },
 ]
 
-const Chart = ({ metric }) => {
+const Chart = ({ metric, selected, setSelected }) => {
   const projects = useProjects()
   const { theme } = useThemeUI()
   const { ticks, xTicks } = useMetric(metric)
@@ -48,6 +48,8 @@ const Chart = ({ metric }) => {
             metric={metric}
             name={name}
             key={name}
+            selected={selected}
+            setSelected={setSelected}
           />
         ))}
         <svg width={'100%'} height={11}>

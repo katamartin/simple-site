@@ -12,12 +12,13 @@ export const ProjectsContextProvider = ({ projects, children }) => {
 
     const { projects } = await result.json()
     const parsedProjects = projects.map(
-      ({ id, applicant, metrics, tags, rating, description }) => ({
+      ({ id, applicant, location, metrics, tags, rating, description }) => ({
         id,
         applicant,
         rating,
         description,
         tags,
+        location: location.name,
         metrics: metrics.map(({ name, value, units, rating }) => ({
           name,
           value,
