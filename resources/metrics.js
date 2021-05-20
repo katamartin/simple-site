@@ -29,24 +29,6 @@ const metrics = {
     // TODO: understand bandwidth, pick better value
     bandwidth: 0.000001,
   },
-  mechanism: {
-    domain: [0, 5],
-    ticks: [0, 1, 2, 3, 4, 5],
-    log: false,
-    bandwidth: 0.2,
-  },
-  additionality: {
-    domain: [0, 5],
-    ticks: [0, 1, 2, 3, 4, 5],
-    log: false,
-    bandwidth: 0.2,
-  },
-  specificity: {
-    domain: [0, 5],
-    ticks: [0, 1, 2, 3, 4, 5],
-    log: false,
-    bandwidth: 0.2,
-  },
 }
 
 export const useMetric = (metric) => {

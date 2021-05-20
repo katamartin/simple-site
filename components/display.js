@@ -23,9 +23,6 @@ const Display = () => {
         <option value='volume'>Volume</option>
         <option value='cost'>Cost</option>
         <option value='negativity'>Negativity</option>
-        <option value='specificity'>Specificity</option>
-        <option value='additionality'>Additionality</option>
-        <option value='mechanism'>Mechanism</option>
       </Select>
 
       {units && (
