@@ -31,7 +31,6 @@ const Display = () => {
           <option value='permanence'>Permanence</option>
           <option value='volume'>Volume</option>
           <option value='cost'>Cost</option>
-          <option value='negativity'>Negativity</option>
         </Select>
 
         {units && (
