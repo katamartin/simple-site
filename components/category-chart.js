@@ -62,6 +62,18 @@ const CategoryChart = ({
     .domain([0, 0.7])
     .range([height - offset, height - offset - 20])
 
+  const { selectedPoints, unselectedPoints } = points.reduce(
+    (accum, point) => {
+      if (point.id === selected) {
+        accum.selectedPoints.push(point)
+      } else {
+        accum.unselectedPoints.push(point)
+      }
+
+      return accum
+    },
+    { selectedPoints: [], unselectedPoints: [] }
+  )
   return (
     <Box
       sx={{
@@ -97,26 +109,30 @@ const CategoryChart = ({
         preserveAspectRatio='none'
       >
         <g key={`${name}-points`}>
-          {points.map(({ id, value }) => {
-            let pointColor = theme.colors[color]
-            if (id === selected) {
-              pointColor = theme.colors.primary
-            } else if (id === hovered) {
-              pointColor = theme.colors.muted
-            }
-            return (
-              <motion.circle
-                style={{ cursor: 'pointer' }}
-                key={`${name}-${id}`}
-                r={5.5}
-                animate={{ cx: x(value) + '%', cy: height - offset }}
-                fill={pointColor}
-                onMouseEnter={() => setHovered(id)}
-                onMouseLeave={() => setHovered(null)}
-                onClick={() => setSelected(id)}
-              />
-            )
-          })}
+          {unselectedPoints.map(({ id, value }) => (
+            <motion.circle
+              style={{ cursor: 'pointer' }}
+              key={`${name}-${id}`}
+              r={5.5}
+              animate={{ cx: x(value) + '%', cy: height - offset }}
+              fill={id === hovered ? theme.colors.muted : theme.colors[color]}
+              onMouseEnter={() => setHovered(id)}
+              onMouseLeave={() => setHovered(null)}
+              onClick={() => setSelected(id)}
+            />
+          ))}
+          {selectedPoints.map(({ id, value }) => (
+            <motion.circle
+              style={{ cursor: 'pointer' }}
+              key={`${name}-${id}`}
+              r={5.5}
+              animate={{ cx: x(value) + '%', cy: height - offset }}
+              fill={theme.colors.primary}
+              onMouseEnter={() => setHovered(id)}
+              onMouseLeave={() => setHovered(null)}
+              onClick={() => setSelected(id)}
+            />
+          ))}
         </g>
       </Box>
     </Box>
