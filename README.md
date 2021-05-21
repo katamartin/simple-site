@@ -14,7 +14,9 @@
 [github-badge]: https://flat.badgen.net/badge/-/github?icon=github&label
 [mit license]: https://flat.badgen.net/badge/license/MIT/blue
 
-This repository is a super simple website set up using the basic components of our web stack and design system: React, Next, ThemeUI, our components, and our theme.
+This is a quick visualization inspired by the static charts in the [2021 CDR analysis results article](https://carbonplan.org/research/microsoft-2021-insights).
+
+![demo](demo.gif)
 
 ## usage
 
