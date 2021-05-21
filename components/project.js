@@ -1,5 +1,5 @@
 import { Box, useThemeUI } from 'theme-ui'
-import { Expander, FadeIn, Tag } from '@carbonplan/components'
+import { FadeIn, Tag } from '@carbonplan/components'
 import { Flex } from 'theme-ui'
 
 // todo: consolidate with categories in chart.js
@@ -40,26 +40,47 @@ const Project = ({ project, metric }) => {
             flexDirection: ['column'],
             justifyContent: 'space-between',
             width: '100%',
-            minHeight: '200px',
+            minHeight: '150px',
           }}
         >
-          <Tag
-            id='tag'
-            variant='primary'
+          <Flex
             sx={{
-              transition: 'color 0.15s, border 0.15s',
-              color: COLOR_MAPPING[project.tags[0]],
+              flexDirection: ['row'],
+              justifyContent: 'space-between',
+              width: '100%',
             }}
           >
-            {project.id}
-          </Tag>
-          <div>
+            <Flex
+              sx={{
+                flexDirection: ['column'],
+                justifyContent: 'space-between',
+                width: '100%',
+              }}
+            >
+              <Box sx={{ fontSize: theme.fontSizes[4] }}>
+                {project.applicant}
+              </Box>
+              {project.location && <Box>{project.location}</Box>}
+            </Flex>
+
+            <Box>
+              <Tag
+                id='tag'
+                variant='primary'
+                sx={{
+                  transition: 'color 0.15s, border 0.15s',
+                  color: COLOR_MAPPING[project.tags[0]],
+                }}
+              >
+                {project.id}
+              </Tag>
+            </Box>
+          </Flex>
+          <Box>
             {selectedMetric.value} {selectedMetric.units}
-          </div>
-          <div>
-            {project.applicant}, {project.location}
-          </div>
-          <div>{project.description}</div>
+          </Box>
+          <Box>{project.description}</Box>
+          {project.methods && <Box>{project.methods}</Box>}
         </Flex>
       </Box>
     </FadeIn>
