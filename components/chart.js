@@ -56,6 +56,14 @@ const Chart = ({ metric, selected, setSelected, hovered, setHovered }) => {
         ))}
         <svg width={'100%'} height={11}>
           {ticks.map((d, i) => {
+            let text = format('~s')(d)
+            if (d === 1000 && metric === 'permanence') {
+              text = '1k+'
+            } else if (d === 1000000 && metric === 'volume') {
+              text = '1M+'
+            } else if (metric === 'negativity') {
+              text = format('~%')(d)
+            }
             return (
               <text
                 key={'tick-' + i}
@@ -67,11 +75,7 @@ const Chart = ({ metric, selected, setSelected, hovered, setHovered }) => {
                 fontSize={theme.fontSizes[2]}
                 style={{ userSelect: 'none' }}
               >
-                {d === 1000 && name === 'permanence'
-                  ? '1k+'
-                  : d === 1000000 && name === 'volume'
-                  ? '1M+'
-                  : format('~s')(d)}
+                {text}
               </text>
             )
           })}
