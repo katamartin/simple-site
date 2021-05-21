@@ -1,5 +1,5 @@
 import { Box, useThemeUI } from 'theme-ui'
-import { FadeIn, Tag } from '@carbonplan/components'
+import { Buttons, FadeIn, Tag } from '@carbonplan/components'
 import { Flex } from 'theme-ui'
 
 // todo: consolidate with categories in chart.js
@@ -12,7 +12,7 @@ const COLOR_MAPPING = {
   dac: 'purple',
 }
 
-const Project = ({ project, metric }) => {
+const Project = ({ project, metric, onClose }) => {
   const { theme } = useThemeUI()
   if (!project) return null
 
@@ -57,6 +57,11 @@ const Project = ({ project, metric }) => {
                 width: '100%',
               }}
             >
+              <Buttons.BackButton
+                onClick={onClose}
+                sx={{ cursor: 'pointer' }}
+              />
+
               <Box sx={{ fontSize: theme.fontSizes[4] }}>
                 {project.applicant}
               </Box>

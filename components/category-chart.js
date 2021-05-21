@@ -13,6 +13,8 @@ const CategoryChart = ({
   projects,
   selected,
   setSelected,
+  hovered,
+  setHovered,
 }) => {
   const metricData = React.useMemo(
     () =>
@@ -28,7 +30,6 @@ const CategoryChart = ({
   )
   const { domain, bandwidth, x } = useMetric(metric)
   const { theme } = useThemeUI()
-  const [hovered, setHovered] = React.useState(null)
 
   const height = 42
   const offset = 12
@@ -98,13 +99,14 @@ const CategoryChart = ({
         <g key={`${name}-points`}>
           {points.map(({ id, value }) => {
             let pointColor = theme.colors[color]
-            if (id === hovered) {
-              pointColor = theme.colors.muted
-            } else if (id === selected) {
+            if (id === selected) {
               pointColor = theme.colors.primary
+            } else if (id === hovered) {
+              pointColor = theme.colors.muted
             }
             return (
               <motion.circle
+                style={{ cursor: 'pointer' }}
                 key={`${name}-${id}`}
                 r={5.5}
                 animate={{ cx: x(value) + '%', cy: height - offset }}

@@ -10,10 +10,12 @@ import Project from './project'
 const Display = () => {
   const projects = useProjects()
   const [metric, setMetric] = React.useState('permanence')
+  const [hoveredProjectId, setHoveredProjectId] = React.useState(null)
   const [selectedProjectId, selectProjectId] = React.useState(null)
-  const selectedProject = React.useMemo(
-    () => projects?.find(({ id }) => id === selectedProjectId),
-    [projects, selectedProjectId]
+  const visibleProjectId = hoveredProjectId || selectedProjectId
+  const visibleProject = React.useMemo(
+    () => projects?.find(({ id }) => id === visibleProjectId),
+    [projects, visibleProjectId]
   )
   const { units } = useMetric(metric)
   const { theme } = useThemeUI()
@@ -51,10 +53,16 @@ const Display = () => {
           metric={metric}
           selected={selectedProjectId}
           setSelected={selectProjectId}
+          hovered={hoveredProjectId}
+          setHovered={setHoveredProjectId}
         />
       </Column>
       <Column start={[1, 7]} width={[6, 4]} sx={{ mt: [0, 6] }}>
-        <Project project={selectedProject} metric={metric} />
+        <Project
+          project={visibleProject}
+          metric={metric}
+          onClose={() => selectProjectId(null)}
+        />
       </Column>
     </Row>
   ) : (
